@@ -1,5 +1,6 @@
 ﻿using leave_management.Data;
 using leave_management.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,37 +15,42 @@ namespace leave_management.Repository
         {
             _db = db;
         }
-        public bool Create(LeaveAllocation entity)
+        async public Task<bool> Create(LeaveAllocation entity)
         {
-            _db.LeaveAllocations.Add(entity);
-            return Save();
+            await _db.LeaveAllocations.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveAllocation entity)
+        async public Task<bool> Delete(LeaveAllocation entity)
         {
             _db.LeaveAllocations.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<LeaveAllocation> FindAll()
+        async public Task<ICollection<LeaveAllocation>> FindAll()
         {
-            return _db.LeaveAllocations.ToList();
+            return await _db.LeaveAllocations.ToListAsync();
         }
 
-        public LeaveAllocation FindById(int id)
+        async public Task<LeaveAllocation> FindById(int id)
         {
-            return _db.LeaveAllocations.Find(id);
+            return await _db.LeaveAllocations.FindAsync(id);
         }
 
-        public bool Save()
+        async public Task<bool> isExists(int id)
         {
-            return _db.SaveChanges() > 0;
+            return await _db.LeaveAllocations.AnyAsync(la => la.Id == id);
         }
 
-        public bool Update(LeaveAllocation entity)
+        async public Task<bool> Save()
+        {
+            return await _db.SaveChangesAsync() > 0;
+        }
+
+        async public Task<bool> Update(LeaveAllocation entity)
         {
             _db.LeaveAllocations.Update(entity);
-            return Save();
+            return await Save();
         }
     }
 }

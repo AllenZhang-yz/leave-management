@@ -12,7 +12,6 @@ using leave_management.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using leave_management.Contracts;
 using leave_management.Repository;
 using leave_management.Repository.IRepository;
 using Microsoft.EntityFrameworkCore.Migrations;

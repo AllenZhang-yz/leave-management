@@ -1,5 +1,6 @@
 ﻿using leave_management.Data;
 using leave_management.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,37 +16,42 @@ namespace leave_management.Repository
             _db = db;
         }
 
-        public bool Create(LeaveHistory entity)
+        async public Task<bool> Create(LeaveHistory entity)
         {
-            _db.LeaveHistories.Add(entity);
-            return Save();
+            await _db.LeaveHistories.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveHistory entity)
+        async public Task<bool> Delete(LeaveHistory entity)
         {
             _db.LeaveHistories.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<LeaveHistory> FindAll()
+        async public Task<ICollection<LeaveHistory>> FindAll()
         {
-            return _db.LeaveHistories.ToList();
+            return await _db.LeaveHistories.ToListAsync();
         }
 
-        public LeaveHistory FindById(int id)
+        async public Task<LeaveHistory> FindById(int id)
         {
-            return _db.LeaveHistories.Find(id);
+            return await _db.LeaveHistories.FindAsync(id);
         }
 
-        public bool Save()
+        async public Task<bool> isExists(int id)
         {
-            return _db.SaveChanges() > 0;
+            return await _db.LeaveHistories.AnyAsync(lh => lh.Id == id);
         }
 
-        public bool Update(LeaveHistory entity)
+        async public Task<bool> Save()
+        {
+            return await _db.SaveChangesAsync() > 0;
+        }
+
+        async public Task<bool> Update(LeaveHistory entity)
         {
             _db.LeaveHistories.Update(entity);
-            return Save();
+            return await Save();
 
         }
     }
